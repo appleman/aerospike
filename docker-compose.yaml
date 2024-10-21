@@ -1,0 +1,51 @@
+version: '3'
+services:
+  aerospike-dc1:
+    image: aerospike/aerospike-server-enterprise
+    container_name: aerospike-dc1
+    volumes:
+      - ./data/dc1:/opt/aerospike/data/
+      - ./conf/dc1/features.conf:/etc/aerospike/features.conf
+      - ./conf/dc1/aerospike.conf:/etc/aerospike/aerospike.conf
+    ports:
+      - "7070:3000"
+      - "7071:3001"
+      - "7072:3002"
+    networks:
+      aerospike-dc-network:
+        ipv4_address: 172.29.0.2
+
+  aerospike-dc2:
+    image: aerospike/aerospike-server-enterprise
+    container_name: aerospike-dc2
+    volumes:
+      - ./data/dc2:/opt/aerospike/data/
+      - ./conf/dc1/features.conf:/etc/aerospike/features.conf
+    ports:
+      - "4000:3000"
+      - "4001:3001"
+      - "4002:3002"
+    networks:
+      aerospike-dc-network:
+        ipv4_address: 172.29.0.3
+
+  aerospike-dc3:
+    image: aerospike/aerospike-server-enterprise
+    container_name: aerospike-dc3
+    volumes:
+      - ./data/dc3:/opt/aerospike/data/
+      - ./conf/dc1/features.conf:/etc/aerospike/features.conf
+    ports:
+      - "6000:3000"
+      - "6001:3001"
+      - "6002:3002"
+    networks:
+      aerospike-dc-network:
+        ipv4_address: 172.29.0.4
+
+networks:
+  aerospike-dc-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.29.0.0/16
